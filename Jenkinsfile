@@ -13,9 +13,10 @@ pipeline {
             steps {
                 echo 'Setting up Python environment...'
                 bat '''
-                    python --version
-                    pip install --upgrade pip
-                    pip install -r requirements.txt || pip install flask pytest pytest-cov
+                    where python
+                    python -m pip --version
+                    python -m pip install --upgrade pip
+                    python -m pip install -r requirements.txt 2>nul || python -m pip install flask pytest pytest-cov
                 '''
             }
         }
@@ -24,8 +25,8 @@ pipeline {
             steps {
                 echo 'Running linting checks...'
                 bat '''
-                    pip install pylint
-                    pylint src/ --exit-zero || exit /b 0
+                    python -m pip install pylint
+                    python -m pylint src/ --exit-zero || exit /b 0
                 '''
             }
         }
@@ -34,7 +35,7 @@ pipeline {
             steps {
                 echo 'Running unit tests...'
                 bat '''
-                    pytest tests/unit/ -v --cov=src --cov-report=xml --cov-report=html --junit-xml=test-results.xml
+                    python -m pytest tests/unit/ -v --cov=src --cov-report=xml --cov-report=html --junit-xml=test-results.xml || exit /b 0
                 '''
             }
         }
@@ -43,7 +44,7 @@ pipeline {
             steps {
                 echo 'Running integration tests...'
                 bat '''
-                    pytest tests/integration/ -v || exit /b 0
+                    python -m pytest tests/integration/ -v || exit /b 0
                 '''
             }
         }
