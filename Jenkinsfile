@@ -31,12 +31,7 @@ pipeline {
             }
         }
 
-        stage('Linting') {
-            steps {
-                echo 'Running linting checks...'
-                bat 'python -m pylint src/ --exit-zero || exit /b 0'
-            }
-        }
+       
     }
 
     post {
