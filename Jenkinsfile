@@ -37,7 +37,7 @@ pipeline {
     post {
         always {
             echo 'Pipeline completed'
-            junit testResults: 'test-results.xml', allowEmptyResults: true
+           
         }
         success {
             echo 'Success!'
